@@ -41,9 +41,12 @@ LATLON_TO_CM = 1.1131884502145034e5
 # The A50 can publish velocity samples far faster than PX4 needs.  Sending one
 # MAVLink message for every received sample lets a temporary TCP backlog turn
 # into a large UDP burst at the autopilot.  Bound each output independently:
-# Keep range headroom above the DVL's 2-15 Hz reports: a 5 Hz cap can skip
-# alternate reports and exceed PX4's 400 ms UUV range-fusion timeout.
-ODOMETRY_PERIOD_S = 0.1
+# Keep headroom above the DVL's 2-15 Hz reports. A cap at or below the report
+# rate skips alternate reports whose arrival jitter falls under the period:
+# a 5 Hz range cap exceeded PX4's 400 ms UUV range-fusion timeout, and a 10 Hz
+# odometry cap at the ~9 Hz report rate doubled many EV velocity intervals to
+# PX4's 200 ms EV_MAX_INTERVAL, which also gates EV fusion restart.
+ODOMETRY_PERIOD_S = 0.05
 RANGEFINDER_PERIOD_S = 0.05
 
 
